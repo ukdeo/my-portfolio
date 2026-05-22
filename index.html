@@ -1,716 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uday Kumar Dev - Portfolio</title>
-    <!-- Three.js for 3D Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uday Kumar Dev — 3D Portfolio Home</title>
+  <meta name="description"
+    content="Step inside my fully interactive 3D virtual home. Explore my projects, skills, education, and hobbies.">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <!-- 3D Canvas -->
-    <canvas id="bg-canvas"></canvas>
 
-    <!-- Background -->
-    <div class="bg-animation"></div>
-    <div class="grid-overlay"></div>
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
+  <!-- Custom Glow Cursor -->
+  <div id="cur"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">UDAY.DEV</div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Education</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#hobbies">Hobbies</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+  <!-- SCREEN 1: EXTERIOR (LANDING PAGE) -->
+  <section id="ext" class="sc on">
+    <canvas id="star-canvas"></canvas>
+    <div class="ground"></div>
+    <div class="path"></div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="about">
-        <div class="hero-wrapper">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="status-indicator"></span>
-                    Available for opportunities
-                </div>
-                <h1>Hi, I'm <span class="gradient-text">Uday Kumar Dev</span></h1>
-                <p class="hero-subtitle">Engineering Student & Aspiring Software Developer</p>
-                <p class="hero-description">
-                    Detail-oriented engineering student with a developing background in software, system planning, 
-                    and technical workflows. I enjoy learning, experimenting, and solving problems with a structured 
-                    approach. Looking for opportunities to apply knowledge, learn from others, and build strong 
-                    professional experience.
-                </p>
-                <div class="cta-buttons">
-                    <a href="#projects" class="btn btn-primary">
-                        <span>View My Work</span>
-                        <span>→</span>
-                    </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <span>Get In Touch</span>
-                    </a>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/ukdeo" target="_blank" class="social-link" title="GitHub">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/uday-dev-48214b342/" target="_blank" class="social-link" title="LinkedIn">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                    </a>
-                    <a href="https://x.com/udayd468" target="_blank" class="social-link" title="Twitter">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                        </svg>
-                    </a>
-                    <a href="mailto:udayd468@gmail.com" class="social-link" title="Email">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+    <div class="house-wrap" id="house-wrapper">
+      <div class="house-sign">
+        <span class="sign-flicker">UDAY</span> KUMAR DEV
+      </div>
+      <div class="house-welcome">WELCOME TO UDAY PORTFOLIO</div>
 
-            <div class="profile-card">
-                <div class="profile-image-wrapper">
-                    <img src="my image.jpg" alt="Uday Kumar Dev" class="profile-image">
-                </div>
-                <div class="profile-info">
-                    <h2>Uday Kumar Dev</h2>
-                    <p class="profile-role">Engineering Student | Software Enthusiast</p>
-                    
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <div class="contact-icon">📞</div>
-                            <div class="contact-text">
-                                <div class="contact-label">Phone</div>
-                                <div class="contact-value">
-                                    <a href ="tel:+977-9825967719">+977-9825967719</a></div>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">📧</div>
-                            <div class="contact-text">
-                                <div class="contact-label">Email</div>
-                                <div class="contact-value">
-                                    <a href="mailto:udayd468@gmail.com">udayd468@gmail.com</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">🌐</div>
-                            <div class="contact-text">
-                                <div class="contact-label">Website</div>
-                                <div class="contact-value">
-                                    <a href="https://udaykumardev.com.np" target="_blank">udaykumardev.com.np</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      <!-- Modern House SVG -->
+      <svg class="house-svg" style="overflow: visible;" viewBox="0 0 600 400" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <!-- Background Hills -->
+        <path d="M 0 160 Q 150 120 300 160 T 600 160 L 600 350 L 0 350 Z" fill="#0c182b" opacity="0.6" />
 
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">C/C++</span>
-                        <span class="tech-badge">HTML/CSS</span>
-                        <span class="tech-badge">JavaScript</span>
-                        <span class="tech-badge">MySQL</span>
-                        <span class="tech-badge">Git/GitHub</span>
-                        <span class="tech-badge">Linux</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        <!-- Neighbor House Far-LHS (Sumit Upreti) -->
+        <a href="https://sumitupreti.com.np" target="_blank" class="neighbor-house nh-left">
+          <title>Sumit Upreti Portfolio</title>
+          <polygon points="-40,310 0,270 40,310" fill="#1e293b" stroke="#334155" stroke-width="2" />
+          <rect x="-30" y="310" width="60" height="50" fill="#0f172a" stroke="#1e293b" stroke-width="2" rx="3" />
+          <rect class="nh-win" x="-15" y="320" width="12" height="12" fill="#f59e0b" rx="1" />
+          <rect x="10" y="330" width="15" height="30" fill="#4d2b12" rx="1" />
+          <text x="0" y="260" class="nh-label" text-anchor="middle">Sumit Upreti</text>
+          <g class="chat-popup" transform="translate(0, 240)">
+            <rect x="-65" y="-12" width="130" height="18" rx="4" fill="#f8fafc" />
+            <polygon points="-5,6 0,11 5,6" fill="#f8fafc" />
+            <text x="0" y="0" font-family="'Inter', sans-serif" font-size="7.5" font-weight="bold" fill="#0f172a"
+              text-anchor="middle">Click to know more about neighbour</text>
+          </g>
+        </a>
 
-    <!-- Education & Certifications Section -->
-    <section id="experience">
-        <div class="section-header">
-            <span class="section-badge">Academic Journey</span>
-            <h2 class="section-title">Education & <span class="gradient-text">Certifications</span></h2>
-            <p class="section-description">Building a strong foundation in computer science and engineering</p>
-        </div>
+        <!-- Neighbor House LHS (Angel Mainali) -->
+        <a href="https://angelmainali.com.np" target="_blank" class="neighbor-house nh-left-2">
+          <title>Angel Mainali Portfolio</title>
+          <polygon points="40,310 80,270 120,310" fill="#1e293b" stroke="#334155" stroke-width="2" />
+          <rect x="50" y="310" width="60" height="50" fill="#0f172a" stroke="#1e293b" stroke-width="2" rx="3" />
+          <rect class="nh-win" x="65" y="320" width="12" height="12" fill="#f59e0b" rx="1" />
+          <rect x="90" y="330" width="15" height="30" fill="#4d2b12" rx="1" />
+          <text x="80" y="260" class="nh-label" text-anchor="middle">Angel Mainali</text>
+          <g class="chat-popup" transform="translate(80, 240)">
+            <rect x="-65" y="-12" width="130" height="18" rx="4" fill="#f8fafc" />
+            <polygon points="-5,6 0,11 5,6" fill="#f8fafc" />
+            <text x="0" y="0" font-family="'Inter', sans-serif" font-size="7.5" font-weight="bold" fill="#0f172a"
+              text-anchor="middle">Click to know more about neighbour</text>
+          </g>
+        </a>
 
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-card">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Bachelor's in Engineering</h3>
-                            <p class="timeline-company">Pathivara Centre For Advanced Studies</p>
-                        </div>
-                        <span class="timeline-date">2022 - Present</span>
-                    </div>
-                    <p class="timeline-description">
-                        Currently pursuing engineering degree with focus on software development, 
-                        system planning, and technical workflows.
-                    </p>
-                    <div class="timeline-achievements">
-                        <div class="achievement-item">First Semester CGPA: 3.44</div>
-                        <div class="achievement-item">Active participant in technical events and hackathons</div>
-                        <div class="achievement-item">Developing skills in software engineering and problem-solving</div>
-                    </div>
-                </div>
-            </div>
+        <!-- Neighbor House RHS (Nawaraj Khanal) -->
+        <a href="https://khanalnawaraj.com.np" target="_blank" class="neighbor-house nh-right">
+          <title>Nawaraj Khanal Portfolio</title>
+          <polygon points="560,310 600,270 640,310" fill="#1e293b" stroke="#334155" stroke-width="2" />
+          <rect x="570" y="310" width="60" height="50" fill="#0f172a" stroke="#1e293b" stroke-width="2" rx="3" />
+          <rect class="nh-win" x="585" y="320" width="12" height="12" fill="#f59e0b" rx="1" />
+          <rect x="610" y="330" width="15" height="30" fill="#4d2b12" rx="1" />
+          <text x="600" y="260" class="nh-label" text-anchor="middle">Nawaraj Khanal</text>
+          <g class="chat-popup" transform="translate(600, 240)">
+            <rect x="-65" y="-12" width="130" height="18" rx="4" fill="#f8fafc" />
+            <polygon points="-5,6 0,11 5,6" fill="#f8fafc" />
+            <text x="0" y="0" font-family="'Inter', sans-serif" font-size="7.5" font-weight="bold" fill="#0f172a"
+              text-anchor="middle">Click to know more about neighbour</text>
+          </g>
+        </a>
 
-            <div class="timeline-item">
-                <div class="timeline-card">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">+2 Science (College)</h3>
-                            <p class="timeline-company">Shree Devi Mavi</p>
-                        </div>
-                        <span class="timeline-date">Completed 2021</span>
-                    </div>
-                    <div class="timeline-achievements">
-                        <div class="achievement-item">CGPA: 2.69</div>
-                        <div class="achievement-item">Foundation in Physics, Chemistry, and Mathematics</div>
-                    </div>
-                </div>
-            </div>
+        <!-- General Neighbour Hint Text -->
+        <text x="300" y="388" font-family="'JetBrains Mono', monospace" font-size="8" fill="#94a3b8"
+          text-anchor="middle" letter-spacing="0.08em" opacity="0.85">🏘️ Click on neighbour houses to know more about neighbours</text>
 
-            <div class="timeline-item">
-                <div class="timeline-card">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">School Education (SEE)</h3>
-                            <p class="timeline-company">Little Angels' English School</p>
-                        </div>
-                        <span class="timeline-date">Completed 2019</span>
-                    </div>
-                    <div class="timeline-achievements">
-                        <div class="achievement-item">CGPA: 3.65</div>
-                        <div class="achievement-item">Strong academic foundation and discipline</div>
-                    </div>
-                </div>
-            </div>
+        <!-- Interactive Person LHS with Chat Pop-up -->
+        <g class="person-neighbor" transform="translate(-70, 310) scale(1.1)" id="neighbor-bot-btn">
+          <circle cx="10" cy="5" r="5" fill="#f1f5f9" />
+          <rect x="5" y="10" width="10" height="15" fill="#38bdf8" rx="2" />
+          <line x1="5" y1="12" x2="0" y2="20" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="15" y1="12" x2="20" y2="20" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="8" y1="25" x2="8" y2="35" stroke="#f1f5f9" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="12" y1="25" x2="12" y2="35" stroke="#f1f5f9" stroke-width="2.5" stroke-linecap="round" />
 
-            <div class="timeline-item">
-                <div class="timeline-card">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Certifications & Achievements</h3>
-                            <p class="timeline-company">Technical Events & Competitions</p>
-                        </div>
-                        <span class="timeline-date">2022 - Present</span>
-                    </div>
-                    <div class="timeline-achievements">
-                        <div class="achievement-item">ACES TECHFEST 7.0 Hackathon Participant</div>
-                        <div class="achievement-item">Technical Report Writing</div>
-                        <div class="achievement-item">Continuous learning through online platforms and workshops</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+          <g class="chat-popup">
+            <rect x="-35" y="-35" width="90" height="30" rx="4" fill="#f8fafc" />
+            <polygon points="5,-5 10,0 15,-5" fill="#f8fafc" />
+            <text x="10" y="-22" font-family="'Inter', sans-serif" font-size="7" font-weight="bold" fill="#0f172a"
+              text-anchor="middle">Click me to</text>
+            <text x="10" y="-12" font-family="'Inter', sans-serif" font-size="7" font-weight="bold" fill="#0f172a"
+              text-anchor="middle">know about Uday!</text>
+          </g>
+        </g>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="section-header">
-            <span class="section-badge">Portfolio</span>
-            <h2 class="section-title">Academic <span class="gradient-text">Projects</span></h2>
-            <p class="section-description">Hands-on learning through practical implementations</p>
+        <!-- Chimney with smoke -->
+        <rect x="420" y="80" width="30" height="70" fill="#1e293b" />
+        <rect x="410" y="70" width="50" height="10" fill="#0f172a" />
+
+        <!-- House Main Frame -->
+        <rect x="100" y="150" width="400" height="200" fill="#0f172a" stroke="#1e293b" stroke-width="4" rx="8" />
+
+        <!-- Roof -->
+        <path d="M80 150L300 60L520 150H80Z" fill="#1e293b" stroke="#334155" stroke-width="4" />
+
+        <!-- High-tech Solar Panel (Left Side of House) -->
+        <g class="solar-panel-array">
+          <line x1="75" y1="350" x2="85" y2="310" stroke="#334155" stroke-width="4" />
+          <polygon points="50,310 120,310 108,285 62,285" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+          <line x1="85" y1="285" x2="85" y2="310" stroke="#38bdf8" stroke-width="1.5" />
+          <line x1="62" y1="297" x2="114" y2="297" stroke="#38bdf8" stroke-width="1.5" />
+        </g>
+
+        <!-- High-tech Satellite Dish (On Left Roof Slope) -->
+        <g class="roof-satellite">
+          <line x1="160" y1="117" x2="150" y2="90" stroke="#475569" stroke-width="3" />
+          <path d="M125 85 C 125 65, 175 65, 175 85" fill="none" stroke="#64748b" stroke-width="4"
+            stroke-linecap="round" />
+          <line x1="150" y1="75" x2="150" y2="55" stroke="#38bdf8" stroke-width="2" />
+          <circle cx="150" cy="55" r="3.5" fill="#38bdf8" class="satellite-signal" />
+        </g>
+
+        <!-- High-tech Wind Turbine (Right Side of House) -->
+        <g class="wind-turbine">
+          <line x1="570" y1="350" x2="570" y2="210" stroke="#334155" stroke-width="4" />
+          <g class="turbine-blades" style="transform-origin: 570px 210px; animation: spinTurbine 5s linear infinite;">
+            <circle cx="570" cy="210" r="6" fill="#64748b" />
+            <line x1="570" y1="210" x2="570" y2="140" stroke="#f8fafc" stroke-width="4.5" stroke-linecap="round" />
+            <line x1="570" y1="210" x2="510" y2="245" stroke="#f8fafc" stroke-width="4.5" stroke-linecap="round" />
+            <line x1="570" y1="210" x2="630" y2="245" stroke="#f8fafc" stroke-width="4.5" stroke-linecap="round" />
+          </g>
+        </g>
+
+        <!-- First Floor Window -->
+        <rect x="130" y="170" width="140" height="60" fill="#1e293b" rx="4" />
+        <rect class="win-glow" x="145" y="180" width="110" height="40" fill="#f59e0b" rx="2" />
+        <line x1="200" y1="180" x2="200" y2="220" stroke="#0f172a" stroke-width="2" />
+        <line x1="145" y1="200" x2="255" y2="200" stroke="#0f172a" stroke-width="2" />
+
+        <!-- Ground Floor Right Window -->
+        <rect x="350" y="240" width="120" height="80" fill="#1e293b" rx="4" />
+        <rect class="win-glow" x="365" y="250" width="90" height="60" fill="#f59e0b" rx="2" />
+        <line x1="410" y1="250" x2="410" y2="310" stroke="#0f172a" stroke-width="2" />
+        <line x1="365" y1="280" x2="455" y2="280" stroke="#0f172a" stroke-width="2" />
+
+        <!-- Door Frame (Realistic Tall Ratio) -->
+        <rect x="238" y="238" width="64" height="112" fill="#0f172a" stroke="#334155" stroke-width="2" rx="4" />
+
+        <!-- Glowing Light Behind Door -->
+        <rect x="241" y="240" width="58" height="108" fill="#fbbf24" opacity="0" id="door-glow-spill" rx="2" />
+
+        <!-- Interactive Front Door (58x108 leaf) -->
+        <g id="front-door" class="door-clickable">
+          <rect x="241" y="240" width="58" height="108" fill="#3b2314" stroke="#5c381f" stroke-width="2" rx="2"
+            id="door-leaf" />
+          <rect x="247" y="248" width="18" height="40" fill="#29180d" rx="1" />
+          <rect x="271" y="248" width="18" height="40" fill="#29180d" rx="1" />
+          <rect x="247" y="296" width="18" height="44" fill="#29180d" rx="1" />
+          <rect x="271" y="296" width="18" height="44" fill="#29180d" rx="1" />
+          <circle cx="290" cy="294" r="4" fill="#fbbf24" id="door-handle" />
+        </g>
+      </svg>
+
+      <div class="enter-hint">CLICK DOOR TO WALK INSIDE</div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: 3D HALLWAY -->
+  <section id="hall" class="sc">
+    <div class="room-3d" id="hallway-box">
+      <!-- FLOOR -->
+      <div class="room-wall floor">
+        <div class="hall-carpet"></div>
+      </div>
+
+      <!-- CEILING -->
+      <div class="room-wall ceiling">
+        <div class="ceiling-lights"></div>
+      </div>
+
+      <!-- LEFT WALL (Projects, Tech Skills) -->
+      <div class="room-wall left">
+        <div class="wall-sconce sconce-l1"></div>
+        <div class="wall-sconce sconce-l2"></div>
+        <div class="wall-decoration mirror"></div>
+
+        <!-- Door 1: Projects Room -->
+        <div class="dr dr-left-1" data-room="projects">
+          <span class="dr-icon">💼</span>
+          <div class="dr-plate"><span class="dr-name">PROJECTS</span></div>
+          <div class="dr-knob"></div>
         </div>
 
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-icon">🏦</div>
-                <h3>Bank Management System</h3>
-                <p>Console-based banking application with account management, transactions, and secure data handling. Implements file handling for persistent storage of customer records.</p>
-                <div class="project-tags">
-                    <span class="project-tag">C Language</span>
-                    <span class="project-tag">File Handling</span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/Bank-Mangement-System-console-based-"target="blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">🗳️</div>
-                <h3>E-Voting System</h3>
-                <p>Secure online voting platform with user authentication, real-time vote counting, and admin dashboard. Features include voter registration and result visualization.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Django</span>
-                    <span class="project-tag">SQLite3</span>
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">HTML/CSS</span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/E--Voting-system" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">🤱</div>
-                <h3>Care Connect</h3>
-                <p>Health care system for pregnent women .It provides proper guidance of vaccine and provides SMS notification about  next vaccine time period.  </p>
-                <div class="project-tags">
-                    <span class="project-tag">javascript</span>
-                    <span class="project-tag">Node.js</span>
-                    <span class="project-tag">React</span>
-                    <sapan class="project-tag">
-                        <a href="https://github.com/aces-erc/aces_techfest_hackathon_v7_3_idiots" target="_blank">View Project -></a>
-                    </sapan>
-
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">🌐</div>
-                <h3>Portfolio Website</h3>
-                
-                <p>Personal portfolio website showcasing projects and skills. Built with responsive design and modern web technologies.</p>
-                <div class="project-tags">
-                    <span class="project-tag">HTML</span>
-                    <span class="project-tag">CSS</span>
-                    <span class="project-tag">JavaScript</span>
-                    <span class="project-tag">
-                       <a href="https://github.com/ukdeo/my-portfolio" target="_blank">View Project -></a>
-                    </span>
-
-                    
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">📊</div>
-                <h3>Stock Prize Prediction System </h3>
-                <span class="maintenance">(Under Maintenance)</span>
-                <p>Predict stock prices using historical data and machine learning algorithms. Implements data preprocessing, model training, and evaluation.</p>   
-                <div class="project-tags">
-                    <span class="project-tag">Docker</span>
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">javascript</span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/stock-Prize-prediction" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">🚀</div>
-                <h3>Space Shooting</h3>
-                <p> Classic space shooting game built with HTML5 Canvas and JavaScript. Features player controls, enemy waves, and score tracking.</p>
-                <div class="project-tags">
-                    <span class="project-tag">HTML5 Canvas</span>
-                    <span class="project-tag">Vanilla JavaScript</span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/space-shooter/tree/main" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-icon">🏥</div>
-                <h3>Diabetes Health Checker</h3>
-                <p>A user-friendly web application that helps assess diabetes risk using machine learning. Designed for non-technical users with clear explanations and actionable health insights. </p>
-                <div class="project-tags">
-                    <span class="project-tag">Streamlit</span>
-                    <span class="project-tag">Pandas</span>
-                    <span class="project-tag">NumPy </span>
-                    <span class="project-tag">Scikit-learn</span>
-                    <span class="project-tag">Matplotlib & Seaborn </span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/Diabetes-Health-check" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-             <div class="project-card">
-                <div class="project-icon">🧠</div>
-                <h3>Habit Tracker</h3>
-                <p>A web application that allows users to track and manage their daily habits. Users can create, edit, and delete habits, and visualize their progress over time.</p>
-                <div class="project-tags">
-                    <span class="project-tag">JavaScript</span>
-                    <span class="project-tag">CSS</span>
-                    <span class="project-tag">HTML </span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/Habit-Tracker" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
-
-             <div class="project-card">
-                <div class="project-icon">🗄️</div>
-                <h3>Self-Healing Database</h3>
-                <p>A self-healing database system that automatically detects and recovers from common database issues. It uses monitoring and automated scripts to maintain database health and minimize downtime.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Mongodb</span>
-                    <span class="project-tag">HTML </span>
-                    <span class="project-tag">css </span>
-                    <span class="project-tag">Docker </span>
-                    <span class="project-tag">
-                        <a href="https://github.com/ukdeo/Self-Healing-Database" target="_blank">View Project -></a>
-                    </span>
-                </div>
-            </div>
+        <!-- Door 2: Tech Skills -->
+        <div class="dr dr-left-2" data-room="skills">
+          <span class="dr-icon">🎨</span>
+          <div class="dr-plate"><span class="dr-name">TECH SKILLS</span></div>
+          <div class="dr-knob"></div>
         </div>
-    </section>
+      </div>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="section-header">
-            <span class="section-badge">Capabilities</span>
-            <h2 class="section-title">Skills & <span class="gradient-text">Competencies</span></h2>
-            <p class="section-description">Technical and soft skills developed through academic learning</p>
+      <!-- RIGHT WALL (Education, Hobbies) -->
+      <div class="room-wall right">
+        <div class="wall-sconce sconce-r1"></div>
+        <div class="wall-sconce sconce-r2"></div>
+        <div class="wall-decoration painting"></div>
+
+        <!-- Door 3: Education Study -->
+        <div class="dr dr-right-1" data-room="education">
+          <span class="dr-icon">🎓</span>
+          <div class="dr-plate"><span class="dr-name">EDUCATION</span></div>
+          <div class="dr-knob"></div>
         </div>
 
-        <div class="skills-grid">
-            <div class="skill-category">
-                <h3>
-                    <span class="skill-icon">💻</span>
-                    Programming Languages
-                </h3>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Python</span>
-                        <span class="skill-level">75%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">C/C++ Programming</span>
-                        <span class="skill-level">70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">JavaScript (Basic)</span>
-                        <span class="skill-level">60%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 60%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <h3>
-                    <span class="skill-icon">🌐</span>
-                    Web & Database
-                </h3>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">HTML & CSS</span>
-                        <span class="skill-level">80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">MySQL (Basic Queries)</span>
-                        <span class="skill-level">65%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 65%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Data Structures</span>
-                        <span class="skill-level">70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <h3>
-                    <span class="skill-icon">🛠️</span>
-                    Tools & Systems
-                </h3>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Git & GitHub</span>
-                        <span class="skill-level">75%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Linux Commands</span>
-                        <span class="skill-level">70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Basic Networking</span>
-                        <span class="skill-level">60%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 60%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <h3>
-                    <span class="skill-icon">🎯</span>
-                    Soft Skills
-                </h3>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Communication</span>
-                        <span class="skill-level">85%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Teamwork</span>
-                        <span class="skill-level">90%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Time Management</span>
-                        <span class="skill-level">80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <h3>
-                    <span class="skill-icon">🎨</span>
-                    Creative Skills
-                </h3>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Videography</span>
-                        <span class="skill-level">75%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Graphic Designing</span>
-                        <span class="skill-level">70%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 70%"></div>
-                    </div>
-                </div>
-                <div class="skill-item">
-                    <div class="skill-header">
-                        <span class="skill-name">Video Editing</span>
-                        <span class="skill-level">80%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: 80%"></div>
-                    </div>
-                </div>
-            </div>
+        <!-- Door 4: Hobbies Room -->
+        <div class="dr dr-right-2" data-room="hobbies">
+          <span class="dr-icon">🎮</span>
+          <div class="dr-plate"><span class="dr-name">HOBBIES</span></div>
+          <div class="dr-knob"></div>
         </div>
-    </section>
+      </div>
 
-    <!-- Hobbies & Interests Section -->
-    <section id="hobbies" style="padding: 4rem 2rem;">
-        <div class="section-header">
-            <span class="section-badge">Beyond Code</span>
-            <h2 class="section-title">Hobbies & <span class="gradient-text">Interests</span></h2>
-            <p class="section-description">Creative pursuits and personal interests</p>
+      <!-- BACK WALL (Backyard Exit) -->
+      <div class="room-wall back">
+        <div class="hallway-end-window"></div>
+
+        <!-- Door 5: Contact Details -->
+        <div class="dr dr-back exit-dr" data-room="contact">
+          <span class="dr-icon">🌌</span>
+          <div class="dr-plate"><span class="dr-name">CONTACT DETAILS</span></div>
+          <div class="dr-knob"></div>
         </div>
+      </div>
+    </div>
+    <!-- Interactive Room Proximity Action Overlay -->
+    <div id="hall-action-prompt" class="action-prompt"></div>
 
-        <div class="skills-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <div class="skill-category" style="text-align: center;">
-                <div class="project-icon" style="margin: 0 auto 1rem;">🎥</div>
-                <h3 style="font-size: 1.25rem;">Videography</h3>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Capturing moments and telling stories through video</p>
-            </div>
-            <div class="skill-category" style="text-align: center;">
-                <div class="project-icon" style="margin: 0 auto 1rem;">🎨</div>
-                <h3 style="font-size: 1.25rem;">Graphic Designing</h3>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Creating visual content and digital artwork</p>
-            </div>
-            <div class="skill-category" style="text-align: center;">
-                <div class="project-icon" style="margin: 0 auto 1rem;">✂️</div>
-                <h3 style="font-size: 1.25rem;">Video Editing</h3>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Crafting engaging content through post-production</p>
-            </div>
-            <div class="skill-category" style="text-align: center;">
-                <div class="project-icon" style="margin: 0 auto 1rem;">💪</div>
-                <h3 style="font-size: 1.25rem;">Bodybuilding</h3>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Building strength, discipline, and a healthy lifestyle</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="section-header">
-            <span class="section-badge">Get In Touch</span>
-            <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
-            <p class="section-description">Open to internships, project collaborations, and learning opportunities!</p>
-        </div>
-
-        <div class="contact-methods">
-            <div class="contact-method">
-                <div class="contact-method-icon">📧</div>
-                <h3>Email</h3>
-                <p><a href="mailto:udayd468@gmail.com">udayd468@gmail.com</a></p>
-            </div>
-            <div class="contact-method">
-                <div class="contact-method-icon">📱</div>
-                <h3>Phone</h3>
-                <p><a href ="tel:+977-9825967719">+977-9825967719</a></p>
-            </div>
-            <div class="contact-method">
-                <div class="contact-method-icon">🌐</div>
-                <h3>Website</h3>
-                <p><a href="https:udaykumardev.com.np" target="_blank">udaykumardev.com.np</a></p>
-            </div>
-        </div>
-
-        <div class="cta-buttons" style="justify-content: center;">
-            <a href="mailto:udayd468@gmail.com" class="btn btn-primary">
-                <span>Send Message</span>
-                <span>📤</span>
-            </a>
-            <a href="CV.pdf" class="btn btn-secondary" download>
-                <span>Download Resume</span>
-                <span>⬇</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-social">
-                <a href="https://github.com/ukdeo" target="_blank" class="footer-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
-                <a href="https://www.linkedin.com/in/uday-dev-48214b342/" target="_blank" class="footer-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                </a>
-                <a href="https://x.com/udayd468" target="_blank" class="footer-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                    </svg>
-                </a>
-                <a href="mailto:udayd468@gmail.com" class="footer-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-                    </svg>
-                </a>
-            </div>
-            <p class="footer-text">© 2025 <a href="#about">Uday Kumar Dev</a>. All Rights Reserved.</p>
-            <p class="footer-text" style="margin-top: 0.5rem; opacity: 0.7;">Built with ❤️ using modern web technologies</p>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <svg width="20" height="20" fill="white" viewBox="0 0 24 24">
-            <path d="M7 14l5-5 5 5z"/>
-        </svg>
+    <!-- On-screen movement controls for first-person experience -->
+    <div class="hallway-nav-panel">
+      <button class="nav-control-btn" id="hall-btn-left" title="Look Left">↺ LOOK LEFT</button>
+      <button class="nav-control-btn" id="hall-btn-forward" title="Step Forward">▲ STEP FORWARD</button>
+      <button class="nav-control-btn" id="hall-btn-backward" title="Step Backward">▼ STEP BACKWARD</button>
+      <button class="nav-control-btn" id="hall-btn-right" title="Look Right">↻ LOOK RIGHT</button>
+      <button class="nav-control-btn" id="hall-btn-outside" title="Go Outside">🚪 GO OUTSIDE</button>
     </div>
 
-    <!-- Chatbot -->
-    <div class="chatbot-container">
-        <div class="chat-bubble" id="chatBubble">
-            <svg viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-                <circle cx="12" cy="10" r="1"/>
-                <circle cx="8" cy="10" r="1"/>
-                <circle cx="16" cy="10" r="1"/>
-            </svg>
-        </div>
+    <div class="hall-overlay-title">
+      <h2>Welcome Inside</h2>
+      <p>Use WASD/Arrow keys or the buttons below to walk. Click doors to enter.</p>
+    </div>
+  </section>
 
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <div class="chat-header-info">
-                    <div class="chat-avatar">🤖</div>
-                    <div class="chat-status">
-                        <div class="chat-status-title">Portfolio Assistant</div>
-                        <div class="chat-status-subtitle">
-                            <span class="status-dot"></span>
-                            <span>Online</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-close" id="chatClose">✕</div>
-            </div>
-
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot">
-                    <div class="message-avatar">🤖</div>
-                    <div>
-                        <div class="message-content">
-                            Hi! 👋 I'm Uday's portfolio assistant. I can help you learn more about his skills, projects, and experience. What would you like to know?
-                        </div>
-                        <div class="quick-replies" id="quickReplies">
-                            <button class="quick-reply-btn" data-reply="Tell me about your skills">💻 Skills</button>
-                            <button class="quick-reply-btn" data-reply="What projects have you worked on?">🚀 Projects</button>
-                            <button class="quick-reply-btn" data-reply="Tell me about your education">🎓 Education</button>
-                            <button class="quick-reply-btn" data-reply="What are your hobbies?">🎨 Hobbies</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chat-input-container">
-                <input 
-                    type="text" 
-                    class="chat-input" 
-                    id="chatInput" 
-                    placeholder="Ask me anything..."
-                    autocomplete="off"
-                >
-                <button class="chat-send-btn" id="chatSend">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
+  <!-- SCREEN 3: DYNAMIC 3D ROOMS -->
+  <section id="room" class="sc">
+    <div class="room-bar-static">
+      <button class="back-btn" id="room-back-btn">← BACK TO HALL</button>
+      <span class="room-ttl" id="room-title">ROOM</span>
+      <span class="room-hint" id="room-hint">Scroll to explore room in 3D</span>
     </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-    <script src="main.js"></script>
+    <!-- 3D Room Box loaded dynamically -->
+    <div class="room-3d" id="room-3d-box">
+      <!-- Populated via main.js -->
+    </div>
+  </section>
 
-    
+  <!-- SCREEN 4: 3D CONTACT BALCONY -->
+  <section id="contact-room" class="sc">
+    <div class="contact-bar-static">
+      <button class="back-btn" id="contact-bar-back-btn">← BACK TO HALL</button>
+      <span class="room-ttl">CONTACT BALCONY</span>
+    </div>
+    <div class="room-3d" id="contact-box">
+      <!-- FLOOR (Balcony tiles) -->
+      <div class="room-wall floor">
+        <div class="balcony-tiles"></div>
+      </div>
+
+      <!-- CEILING (Night Sky Canvas wrapper) -->
+      <div class="room-wall ceiling">
+        <canvas id="balcony-star-canvas"></canvas>
+      </div>
+
+      <!-- LEFT WALL (Cozy Plant stand) -->
+      <div class="room-wall left">
+        <div class="balcony-plant">🪴</div>
+      </div>
+
+      <!-- RIGHT WALL (Hanging Lantern) -->
+      <div class="room-wall right">
+        <div class="balcony-lantern-glowing">🏮</div>
+      </div>
+
+      <!-- BACK WALL (Railing showing stars) -->
+      <div class="room-wall back">
+        <div class="balcony-rail-3d"></div>
+
+        <!-- Interactive Contact Plate -->
+        <div class="contact-box-3d">
+          <div class="ct-title">LET'S CONNECT</div>
+          <div class="ct-sub">// engineering student & developer</div>
+          <p
+            style="color: #6b8099; text-align: center; font-size: 0.78rem; max-width: 380px; line-height: 1.5; margin-bottom: 0.8rem;">
+            Open to internships, collaborations, and engineering roles. Reach out from the balcony.
+          </p>
+
+          <div class="ct-links">
+            <a href="mailto:udayd468@gmail.com" class="ctlnk"><span>📧</span> udayd468@gmail.com</a>
+            <a href="tel:+9779825967719" class="ctlnk"><span>📞</span> +977-9825967719</a>
+            <a href="https://github.com/ukdeo" target="_blank" class="ctlnk"><span>🐙</span> GitHub Profile</a>
+            <a href="https://www.linkedin.com/in/uday-dev-48214b342/" target="_blank" class="ctlnk"><span>🔗</span>
+              LinkedIn Profile</a>
+          </div>
+
+          <div class="ct-btns">
+            <a href="mailto:udayd468@gmail.com" class="ct-btn ct-btn-p">Send Email</a>
+            <a href="CV.pdf" download class="ct-btn ct-btn-g">Download CV</a>
+          </div>
+
+          <button class="ct-back" id="contact-back-btn">← RE-ENTER HALLWAY</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: DETAILS MODAL -->
+  <div id="modal">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close-btn">&times;</button>
+      <div class="modal-icon" id="modal-icon">💼</div>
+      <h3 class="modal-title" id="modal-title">Project Title</h3>
+      <p class="modal-desc" id="modal-desc">Project details go here.</p>
+      <div class="modal-tags" id="modal-tags"></div>
+      <a href="#" target="_blank" class="modal-link" id="modal-link">View Code Repository</a>
+    </div>
+  </div>
+
+  <!-- FLOATING CARD FOR HOVER DETAILS -->
+  <div id="floating-card" class="floating-tooltip">
+    <div class="float-title">Project Title</div>
+    <div class="float-desc">Details...</div>
+    <div class="float-hint">Click to inspect code</div>
+  </div>
+
+  <!-- CHATBOT MODAL -->
+  <div id="chatbot-modal" class="chatbot-wrap">
+    <div class="chatbot-box">
+      <div class="chat-header">
+        <h4>Neighbor Bot</h4>
+        <button id="close-chatbot">&times;</button>
+      </div>
+      <div class="chat-history" id="chat-history">
+        <div class="chat-msg bot-msg">Hi! I'm Uday's neighbor. Ask me anything about his skills, projects, education, or
+          hobbies!</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask about Uday..." autocomplete="off" />
+        <button id="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
+
 </html>
