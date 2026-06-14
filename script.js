@@ -363,8 +363,8 @@ function handleChat() {
         
         if (lowerText.includes('skill') || lowerText.includes('language') || lowerText.includes('tools')) {
             reply = "Uday is an expert in Python, JavaScript, C++, React, and Tailwind CSS. He also uses tools like Docker, Git, MongoDB, and SQL.";
-        } else if (lowerText.includes('project') || lowerText.includes('work') || lowerText.includes('portfolio')) {
-            reply = "He has built an E-Voting System, a Care Connect healthcare app (Hackathon Winner!), a Diabetes Health Checker using ML, and a Self-Healing Database. Check the Featured Projects section above!";
+        } else if (lowerText.includes('project') || lowerText.includes('work') || lowerText.includes('portfolio') || lowerText.includes('palo') || lowerText.includes('queue')) {
+            reply = "He has built the Pālo Queue Management System, an E-Voting System, a Care Connect healthcare app (Hackathon Winner!), and a Self-Healing Database. Check the Featured Projects section above!";
         } else if (lowerText.includes('contact') || lowerText.includes('email') || lowerText.includes('phone') || lowerText.includes('hire')) {
             reply = "You can reach him at udayd468@gmail.com or +977-9825967719. His GitHub is @ukdeo and he's also on LinkedIn!";
         } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
