@@ -58,9 +58,11 @@ let hasInteracted = false;
 
 const soundBtn = document.getElementById('enable-sound-btn');
 
-// The video will natively autoplay muted thanks to the HTML attributes.
 // Listen for an explicit button click or a body click to unmute it.
 const enableSound = () => {
+    // Only allow unmuting if we are at the top of the page (hero section)
+    if (window.scrollY > window.innerHeight * 0.3) return;
+
     if (video && video.muted) {
         video.muted = false;
         video.volume = 1.0;
