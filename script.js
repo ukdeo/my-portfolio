@@ -56,43 +56,56 @@ const revealElements = document.querySelectorAll('.reveal');
 
 let hasInteracted = false;
 
-// Unmute video instantly once it is loaded
-video.addEventListener('canplay', () => {
-    if (!hasInteracted && window.scrollY < window.innerHeight * 0.3) {
-        video.muted = false;
-        video.play().catch(e => console.log('Playback failed:', e));
-        hasInteracted = true;
-    }
-});
+const soundBtn = document.getElementById('enable-sound-btn');
 
-// Fallback: Unmute on first user interaction if browser blocks autoplay
-document.body.addEventListener('click', () => {
-    if (video.muted && window.scrollY < window.innerHeight * 0.3) {
+// The video will natively autoplay muted thanks to the HTML attributes.
+// Listen for an explicit button click or a body click to unmute it.
+const enableSound = () => {
+    if (video && video.muted) {
         video.muted = false;
-        video.play().catch(e => console.log('Playback failed:', e));
+        video.volume = 1.0;
         hasInteracted = true;
+        video.play().catch(e => console.log('Playback failed:', e));
+        if (soundBtn) soundBtn.style.display = 'none';
     }
-});
+};
 
+if (soundBtn) {
+    soundBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent body click
+        enableSound();
+    });
+}
+
+document.body.addEventListener('click', enableSound);
+
+let isVideoFaded = false;
 // Mute video on scroll and add smooth effects
 window.addEventListener('scroll', () => {
-    if (window.scrollY > window.innerHeight * 0.3) {
+    if (!video) return;
+    const shouldFade = window.scrollY > window.innerHeight * 0.3;
+    
+    if (shouldFade && !isVideoFaded) {
         if (!video.muted) video.muted = true;
         video.style.opacity = '0.3';
-        video.style.filter = 'blur(10px)';
-    } else {
-        if (hasInteracted) video.muted = false;
+        isVideoFaded = true;
+    } else if (!shouldFade && isVideoFaded) {
+        if (hasInteracted) {
+            video.muted = false;
+            video.play().catch(()=>{});
+        }
         video.style.opacity = '1';
-        video.style.filter = 'blur(0px)';
+        isVideoFaded = false;
     }
 });
 
 // Mute video when clicking a nav link and add smooth effects
 navItems.forEach(item => {
     item.addEventListener('click', () => {
+        if (!video || isVideoFaded) return;
         if (!video.muted) video.muted = true;
         video.style.opacity = '0.3';
-        video.style.filter = 'blur(10px)';
+        isVideoFaded = true;
     });
 });
 
