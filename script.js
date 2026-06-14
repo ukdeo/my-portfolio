@@ -56,9 +56,18 @@ const revealElements = document.querySelectorAll('.reveal');
 
 let hasInteracted = false;
 
-// Unmute video on first user interaction to bypass browser autoplay policies
-document.body.addEventListener('click', () => {
+// Unmute video instantly once it is loaded
+video.addEventListener('canplay', () => {
     if (!hasInteracted && window.scrollY < window.innerHeight * 0.3) {
+        video.muted = false;
+        video.play().catch(e => console.log('Playback failed:', e));
+        hasInteracted = true;
+    }
+});
+
+// Fallback: Unmute on first user interaction if browser blocks autoplay
+document.body.addEventListener('click', () => {
+    if (video.muted && window.scrollY < window.innerHeight * 0.3) {
         video.muted = false;
         video.play().catch(e => console.log('Playback failed:', e));
         hasInteracted = true;
