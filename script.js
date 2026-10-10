@@ -1,25 +1,57 @@
-// Navigation scroll effect
-const navbar = document.getElementById('navbar');
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
-const navItems = document.querySelectorAll('.nav-links li a');
+/* ============================================================
+   UDAY KUMAR DEV — Premium Portfolio JS
+   ============================================================ */
 
-// Add scrolled class to navbar when scrolling down
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+'use strict';
+
+/* ── Custom Cursor ────────────────────────────────────────── */
+const cursorDot  = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+
+if (cursorDot && cursorRing) {
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+    const ease = 0.12;
+
+    document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top  = mouseY + 'px';
+    });
+
+    function animateRing() {
+        ringX += (mouseX - ringX) * ease;
+        ringY += (mouseY - ringY) * ease;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top  = ringY + 'px';
+        requestAnimationFrame(animateRing);
     }
+    animateRing();
+
+    // Enlarge ring on interactive elements
+    const hoverTargets = document.querySelectorAll('a, button, .project-card, .skill-badge, .hobby-pill, .contact-link');
+    hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => cursorRing.classList.add('hovered'));
+        el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovered'));
+    });
+}
+
+/* ── Navigation ───────────────────────────────────────────── */
+const navbar    = document.getElementById('navbar');
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('nav-links');
+const navItems  = document.querySelectorAll('.nav-links li a');
+
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// Mobile menu toggle
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
 });
 
-// Close mobile menu when a link is clicked
 navItems.forEach(item => {
     item.addEventListener('click', () => {
         hamburger.classList.remove('active');
@@ -27,21 +59,15 @@ navItems.forEach(item => {
     });
 });
 
-// Active link highlighting based on scroll position
-const sections = document.querySelectorAll('section, header');
-
+// Active link on scroll
+const sections = document.querySelectorAll('section[id], header[id]');
 window.addEventListener('scroll', () => {
     let current = '';
-    
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (scrollY >= (sectionTop - sectionHeight / 3)) {
-            current = section.getAttribute('id');
+        if (scrollY >= section.offsetTop - section.clientHeight / 3) {
+            current = section.id;
         }
     });
-
     navItems.forEach(item => {
         item.classList.remove('active');
         if (item.getAttribute('href').substring(1) === current) {
@@ -50,327 +76,325 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Video sound control and scroll reveal
-const video = document.querySelector('.bg-video');
-const revealElements = document.querySelectorAll('.reveal');
+/* ── Hero Canvas — Particle Web ───────────────────────────── */
+(function initHeroCanvas() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-let hasInteracted = false;
-
-const soundBtn = document.getElementById('enable-sound-btn');
-
-// Listen for an explicit button click or a body click to unmute it.
-const enableSound = () => {
-    // Only allow unmuting if we are at the top of the page (hero section)
-    if (window.scrollY > window.innerHeight * 0.3) return;
-
-    if (video && video.muted) {
-        video.muted = false;
-        video.volume = 1.0;
-        hasInteracted = true;
-        video.play().catch(e => console.log('Playback failed:', e));
-        if (soundBtn) soundBtn.style.display = 'none';
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-};
+    resize();
+    window.addEventListener('resize', resize);
 
-if (soundBtn) {
-    soundBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent body click
-        enableSound();
+    const PARTICLE_COUNT = 80;
+    const particles = [];
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push({
+            x:    Math.random() * canvas.width,
+            y:    Math.random() * canvas.height,
+            vx:   (Math.random() - 0.5) * 0.4,
+            vy:   (Math.random() - 0.5) * 0.4,
+            r:    Math.random() * 1.5 + 0.3,
+            alpha: Math.random() * 0.4 + 0.1,
+        });
+    }
+
+    let mouseX = -9999, mouseY = -9999;
+    document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height)  p.vy *= -1;
+
+            // Draw dot
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+            ctx.fill();
+
+            // Draw connecting lines
+            for (let j = i + 1; j < particles.length; j++) {
+                const q    = particles[j];
+                const dist = Math.hypot(p.x - q.x, p.y - q.y);
+                if (dist < 130) {
+                    const alpha = (1 - dist / 130) * 0.12;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(q.x, q.y);
+                    ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+                    ctx.lineWidth   = 0.5;
+                    ctx.stroke();
+                }
+            }
+
+            // Mouse repulsion
+            const mDist = Math.hypot(p.x - mouseX, p.y - mouseY);
+            if (mDist < 120) {
+                const force = (120 - mDist) / 120;
+                const angle = Math.atan2(p.y - mouseY, p.x - mouseX);
+                p.vx += Math.cos(angle) * force * 0.08;
+                p.vy += Math.sin(angle) * force * 0.08;
+            }
+
+            // Dampen velocity
+            p.vx *= 0.998;
+            p.vy *= 0.998;
+        });
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+/* ── Projects Canvas — Monochrome Moving Lines ────────────── */
+(function initProjectsCanvas() {
+    const canvas  = document.getElementById('projects-canvas');
+    const section = document.getElementById('projects');
+    if (!canvas || !section) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width  = section.offsetWidth;
+        canvas.height = section.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const lines = Array.from({ length: 8 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        angle: Math.random() * Math.PI * 2,
+        speed: 0.3 + Math.random() * 0.5,
+        length: 100 + Math.random() * 150,
+        width:  0.5 + Math.random() * 1,
+        alpha:  0.08 + Math.random() * 0.12,
+    }));
+
+    let visible = false;
+
+    function drawLines() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        lines.forEach(l => {
+            l.x += Math.cos(l.angle) * l.speed;
+            l.y += Math.sin(l.angle) * l.speed;
+            if (l.x < 0 || l.x > canvas.width)  l.angle = Math.PI - l.angle;
+            if (l.y < 0 || l.y > canvas.height)  l.angle = -l.angle;
+
+            const grd = ctx.createLinearGradient(
+                l.x, l.y,
+                l.x + Math.cos(l.angle) * l.length,
+                l.y + Math.sin(l.angle) * l.length
+            );
+            grd.addColorStop(0, `rgba(255,255,255,${l.alpha})`);
+            grd.addColorStop(1, `rgba(255,255,255,0)`);
+
+            ctx.beginPath();
+            ctx.moveTo(l.x, l.y);
+            ctx.lineTo(
+                l.x + Math.cos(l.angle) * l.length,
+                l.y + Math.sin(l.angle) * l.length
+            );
+            ctx.strokeStyle = grd;
+            ctx.lineWidth   = l.width;
+            ctx.stroke();
+        });
+        if (visible) requestAnimationFrame(drawLines);
+    }
+
+    new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+        if (visible) drawLines();
+    }, { threshold: 0 }).observe(section);
+})();
+
+/* ── Skills Canvas — Floating Text Particles ──────────────── */
+(function initSkillsCanvas() {
+    const canvas  = document.getElementById('skills-canvas');
+    const section = document.getElementById('skills');
+    if (!canvas || !section) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width  = section.offsetWidth;
+        canvas.height = section.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const words = ['Python','JavaScript','React','FastAPI','Docker','MongoDB',
+                   'C++','Django','TensorFlow','Node.js','Scikit-Learn','Git',
+                   'SQL','Firebase','PostgreSQL','Streamlit','GitHub','C'];
+
+    const particles = [];
+    words.forEach(w => {
+        [0, 1].forEach(() => {
+            particles.push({
+                label:    w,
+                x:        Math.random() * canvas.width,
+                y:        Math.random() * canvas.height,
+                dx:       (Math.random() - 0.5) * 0.5,
+                dy:       (Math.random() - 0.5) * 0.5,
+                fontSize: 11 + Math.random() * 9,
+                alpha:    0.05 + Math.random() * 0.1,
+                pulse:    Math.random() * Math.PI * 2,
+            });
+        });
+    });
+
+    let visible = false;
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.pulse += 0.015;
+            p.alpha = 0.04 + Math.abs(Math.sin(p.pulse)) * 0.1;
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x < -120 || p.x > canvas.width + 120) p.dx *= -1;
+            if (p.y < -30  || p.y > canvas.height + 30)  p.dy *= -1;
+
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.font = `600 ${p.fontSize}px 'Space Grotesk', sans-serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.letterSpacing = '1px';
+            ctx.fillText(p.label, p.x, p.y);
+            ctx.restore();
+        });
+        if (visible) requestAnimationFrame(draw);
+    }
+
+    new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+        if (visible) draw();
+    }, { threshold: 0 }).observe(section);
+})();
+
+/* ── Counter Animation ────────────────────────────────────── */
+function animateCounter(el, target, duration = 1800) {
+    let start = null;
+    function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        el.textContent = Math.floor(progress * target) + (progress < 1 ? '' : '+');
+        if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
 }
 
-document.body.addEventListener('click', enableSound);
+const yearsEl    = document.getElementById('years-counter');
+const projectsEl = document.getElementById('projects-counter');
 
-let isVideoFaded = false;
-// Mute video on scroll and add smooth effects
-window.addEventListener('scroll', () => {
-    if (!video) return;
-    const shouldFade = window.scrollY > window.innerHeight * 0.3;
-    
-    if (shouldFade && !isVideoFaded) {
-        if (!video.muted) video.muted = true;
-        video.style.opacity = '0.3';
-        isVideoFaded = true;
-    } else if (!shouldFade && isVideoFaded) {
-        if (hasInteracted) {
-            video.muted = false;
-            video.play().catch(()=>{});
+if (yearsEl && projectsEl) {
+    const observer = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+            animateCounter(yearsEl, 1);
+            animateCounter(projectsEl, 8);
+            observer.disconnect();
         }
-        video.style.opacity = '1';
-        isVideoFaded = false;
-    }
-});
+    }, { threshold: 0.5 });
+    observer.observe(document.querySelector('.hero-stats') || document.querySelector('.hero-visual'));
+}
 
-// Mute video when clicking a nav link and add smooth effects
-navItems.forEach(item => {
-    item.addEventListener('click', () => {
-        if (!video || isVideoFaded) return;
-        if (!video.muted) video.muted = true;
-        video.style.opacity = '0.3';
-        isVideoFaded = true;
-    });
-});
-
-// Intersection Observer for scroll animations
-const revealObserver = new IntersectionObserver((entries) => {
+/* ── Scroll Reveal ────────────────────────────────────────── */
+const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('active');
     });
-}, { threshold: 0.15 });
+}, { threshold: 0.12 });
 
-revealElements.forEach(el => revealObserver.observe(el));
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-// Staggered card-reveal observer
-const cardObserver = new IntersectionObserver((entries) => {
+/* ── Staggered Card Reveal ────────────────────────────────── */
+const cardObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const delay = parseInt(entry.target.dataset.delay) || 0;
-            setTimeout(() => {
-                entry.target.classList.add('active');
-            }, delay);
+            setTimeout(() => entry.target.classList.add('active'), delay);
             cardObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 
 document.querySelectorAll('.card-reveal').forEach(el => cardObserver.observe(el));
 
-// Laser canvas animation
-const canvas = document.getElementById('laser-canvas');
-const ctx = canvas.getContext('2d');
-const projectsSection = document.getElementById('projects');
-
-function resizeCanvas() {
-    canvas.width = projectsSection.offsetWidth;
-    canvas.height = projectsSection.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const lasers = Array.from({ length: 6 }, (_, i) => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    angle: Math.random() * Math.PI * 2,
-    speed: 0.4 + Math.random() * 0.6,
-    length: 120 + Math.random() * 180,
-    width: 1.5 + Math.random() * 2,
-    hue: 190 + Math.random() * 50,   // cyan-blue range
-    alpha: 0.5 + Math.random() * 0.4,
-}));
-
-function drawLasers() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    lasers.forEach(l => {
-        l.x += Math.cos(l.angle) * l.speed;
-        l.y += Math.sin(l.angle) * l.speed;
-
-        // Bounce off walls
-        if (l.x < 0 || l.x > canvas.width)  l.angle = Math.PI - l.angle;
-        if (l.y < 0 || l.y > canvas.height) l.angle = -l.angle;
-
-        const grd = ctx.createLinearGradient(
-            l.x, l.y,
-            l.x + Math.cos(l.angle) * l.length,
-            l.y + Math.sin(l.angle) * l.length
-        );
-        grd.addColorStop(0, `hsla(${l.hue}, 100%, 70%, ${l.alpha})`);
-        grd.addColorStop(1, `hsla(${l.hue}, 100%, 70%, 0)`);
-
-        ctx.beginPath();
-        ctx.moveTo(l.x, l.y);
-        ctx.lineTo(
-            l.x + Math.cos(l.angle) * l.length,
-            l.y + Math.sin(l.angle) * l.length
-        );
-        ctx.strokeStyle = grd;
-        ctx.lineWidth = l.width;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = `hsla(${l.hue}, 100%, 70%, 0.8)`;
-        ctx.stroke();
+/* ── Hero Image Parallax ──────────────────────────────────── */
+const heroImg = document.getElementById('hero-img');
+if (heroImg) {
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        heroImg.style.transform = `translateY(${scrollY * 0.15}px)`;
     });
-    if (isLasersVisible) {
-        requestAnimationFrame(drawLasers);
-    }
 }
 
-let isLasersVisible = false;
-const lasersObserver = new IntersectionObserver((entries) => {
-    isLasersVisible = entries[0].isIntersecting;
-    if (isLasersVisible) drawLasers();
-}, { threshold: 0 });
-lasersObserver.observe(projectsSection);
-
-// ─── Skills Canvas: floating skill name text ──────────────────────────────────
-const skillsCanvas  = document.getElementById('skills-canvas');
-const skillsSection = document.getElementById('skills');
-const sCtx          = skillsCanvas.getContext('2d');
-
-function resizeSkillsCanvas() {
-    skillsCanvas.width  = skillsSection.offsetWidth;
-    skillsCanvas.height = skillsSection.offsetHeight;
-}
-resizeSkillsCanvas();
-window.addEventListener('resize', resizeSkillsCanvas);
-
-const floatingSkills = [
-    { label: 'Python',          color: '#f59e0b' },
-    { label: 'JavaScript',      color: '#38bdf8' },
-    { label: 'C++',             color: '#10b981' },
-    { label: 'C',               color: '#ef4444' },
-    { label: 'React',           color: '#ec4899' },
-    { label: 'HTML5',           color: '#38bdf8' },
-    { label: 'CSS3',            color: '#a855f7' },
-    { label: 'Tailwind',        color: '#a855f7' },
-    { label: 'Git',             color: '#f59e0b' },
-    { label: 'Docker',          color: '#38bdf8' },
-    { label: 'MongoDB',         color: '#10b981' },
-    { label: 'SQL',             color: '#a855f7' },
-    { label: 'Node.js',         color: '#10b981' },
-    { label: 'Scikit-Learn',    color: '#ef4444' },
-    { label: 'TensorFlow',      color: '#f59e0b' },
-    { label: 'Django',          color: '#38bdf8' },
-    { label: 'Streamlit',       color: '#ec4899' },
-    { label: 'GitHub',          color: '#f59e0b' },
-];
-
-// Build moving particles – one per skill, duplicated for density
-const textParticles = [];
-floatingSkills.forEach((s, i) => {
-    // spawn 1-2 copies of each
-    [0, 1].forEach(copy => {
-        const fontSize = 13 + Math.random() * 10;
-        textParticles.push({
-            label:    s.label,
-            color:    s.color,
-            x:        Math.random() * skillsCanvas.width,
-            y:        Math.random() * skillsCanvas.height,
-            dx:       (Math.random() - 0.5) * 0.6,
-            dy:       (Math.random() - 0.5) * 0.6,
-            fontSize,
-            alpha:    0.5 + Math.random() * 0.4,
-            pulse:    Math.random() * Math.PI * 2,
-        });
-    });
-});
-
-function drawSkillText() {
-    sCtx.clearRect(0, 0, skillsCanvas.width, skillsCanvas.height);
-
-    textParticles.forEach(p => {
-        p.pulse += 0.018;
-        p.alpha = 0.45 + Math.sin(p.pulse) * 0.3;
-
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < -120 || p.x > skillsCanvas.width  + 120) p.dx *= -1;
-        if (p.y < -30  || p.y > skillsCanvas.height + 30)  p.dy *= -1;
-
-        sCtx.save();
-        sCtx.globalAlpha = Math.max(0.1, p.alpha);
-        sCtx.font        = `bold ${p.fontSize}px 'Space Grotesk', sans-serif`;
-        sCtx.fillStyle   = p.color;
-        sCtx.shadowBlur  = 14;
-        sCtx.shadowColor = p.color;
-        sCtx.fillText(p.label, p.x, p.y);
-        sCtx.restore();
-    });
-
-    if (isSkillsVisible) {
-        requestAnimationFrame(drawSkillText);
-    }
-}
-
-let isSkillsVisible = false;
-const skillsObserver = new IntersectionObserver((entries) => {
-    isSkillsVisible = entries[0].isIntersecting;
-    if (isSkillsVisible) drawSkillText();
-}, { threshold: 0 });
-skillsObserver.observe(skillsSection);
-
-// ─── Smooth video playback ────────────────────────────────────────────────────
-const bgVideo = document.querySelector('.bg-video');
-if (bgVideo) {
-    bgVideo.setAttribute('playsinline', '');
-    bgVideo.setAttribute('preload', 'auto');
-    // Resume play if interrupted (e.g. browser throttle)
-    bgVideo.addEventListener('pause', () => {
-        if (window.scrollY < window.innerHeight * 0.3) {
-            bgVideo.play().catch(() => {});
-        }
-    });
-    bgVideo.addEventListener('stalled', () => bgVideo.load());
-    bgVideo.play().catch(() => {});
-}
-
-// ─── Chatbot Logic ───────────────────────────────────────────────────────────
-const chatToggle = document.getElementById('chat-toggle');
-const chatWindow = document.getElementById('chat-window');
-const closeChat = document.getElementById('close-chat');
-const chatInput = document.getElementById('chat-input');
-const sendChat = document.getElementById('send-chat');
+/* ── Chatbot ──────────────────────────────────────────────── */
+const chatToggle  = document.getElementById('chat-toggle');
+const chatWindow  = document.getElementById('chat-window');
+const closeChat   = document.getElementById('close-chat');
+const chatInput   = document.getElementById('chat-input');
+const sendChat    = document.getElementById('send-chat');
 const chatMessages = document.getElementById('chat-messages');
+const chatDot     = document.getElementById('chat-dot');
 
-// Toggle chat window
+let chatOpen = false;
+
 function toggleChat() {
-    const isHidden = chatWindow.classList.contains('hidden');
-    const tooltip = document.getElementById('chat-tooltip');
-
-    if (isHidden) {
-        // Opening chat: Hide tooltip
-        if (tooltip) tooltip.style.display = 'none';
-        
-        chatWindow.classList.remove('hidden');
-        // trigger reflow
-        void chatWindow.offsetWidth;
-        chatWindow.classList.remove('scale-95', 'opacity-0');
-        chatWindow.classList.add('scale-100', 'opacity-100');
-        // remove notification dot
-        const dots = chatToggle.querySelectorAll('span.absolute');
-        dots.forEach(d => d.style.display = 'none');
+    chatOpen = !chatOpen;
+    if (chatOpen) {
+        chatWindow.classList.add('open');
+        if (chatDot) chatDot.style.display = 'none';
+        chatInput.focus();
     } else {
-        // Closing chat: Show tooltip again
-        if (tooltip) tooltip.style.display = '';
-
-        chatWindow.classList.remove('scale-100', 'opacity-100');
-        chatWindow.classList.add('scale-95', 'opacity-0');
-        setTimeout(() => chatWindow.classList.add('hidden'), 300);
+        chatWindow.classList.remove('open');
     }
 }
 
 chatToggle.addEventListener('click', toggleChat);
 closeChat.addEventListener('click', toggleChat);
 
-// Handle sending messages
 function addMessage(text, isUser = false) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `p-3 rounded-xl max-w-[85%] text-sm ${isUser ? 'bg-cyan-600 text-white self-end rounded-tr-sm' : 'bg-white/10 text-gray-200 self-start rounded-tl-sm border border-white/5'}`;
-    msgDiv.textContent = text;
-    chatMessages.appendChild(msgDiv);
+    const div = document.createElement('div');
+    div.className = `chat-msg ${isUser ? 'user' : 'bot'}`;
+    div.textContent = text;
+    chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function handleChat() {
     const text = chatInput.value.trim();
     if (!text) return;
-    
+
     addMessage(text, true);
     chatInput.value = '';
 
-    // Simple bot logic
     setTimeout(() => {
-        const lowerText = text.toLowerCase();
-        let reply = "I'm not sure about that. Try asking about 'skills', 'projects', or 'contact'!";
-        
-        if (lowerText.includes('skill') || lowerText.includes('language') || lowerText.includes('tools')) {
-            reply = "Uday is an expert in Python, JavaScript, C++, React, and Tailwind CSS. He also uses tools like Docker, Git, MongoDB, and SQL.";
-        } else if (lowerText.includes('project') || lowerText.includes('work') || lowerText.includes('portfolio') || lowerText.includes('palo') || lowerText.includes('queue')) {
-            reply = "He has built the Pālo Queue Management System, an E-Voting System, a Care Connect healthcare app (Hackathon Winner!), and a Self-Healing Database. Check the Featured Projects section above!";
-        } else if (lowerText.includes('contact') || lowerText.includes('email') || lowerText.includes('phone') || lowerText.includes('hire')) {
-            reply = "You can reach him at udayd468@gmail.com or +977-9825967719. His GitHub is @ukdeo and he's also on LinkedIn!";
-        } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
-            reply = "Hello! How can I help you navigate Uday's portfolio?";
+        const q = text.toLowerCase();
+        let reply = "Try asking about 'skills', 'projects', 'contact', or 'experience'!";
+
+        if (q.match(/skill|language|tool|tech/)) {
+            reply = "Uday is skilled in Python, JavaScript, React, C++, FastAPI, Django, Docker, MongoDB, PostgreSQL, TensorFlow, and Scikit-Learn.";
+        } else if (q.match(/project|work|portfolio|palo|queue|bank|voting|care|diabet|stock|database|habit/)) {
+            reply = "He's built 8 featured projects: Pālo Queue System, E-Voting System, Care Connect, Diabetes Checker, Stock Prediction, Self-Healing DB, Bank System & Habit Tracker!";
+        } else if (q.match(/contact|email|phone|hire|reach/)) {
+            reply = "📧 udayd468@gmail.com | 📞 +977-9825967719 | GitHub: @ukdeo | LinkedIn: Uday Kumar Dev";
+        } else if (q.match(/education|study|college|school|degree/)) {
+            reply = "Uday holds a Bachelor in Computer Engineering from Pathivara Engineering College, and participated in ACES Techfest Hackathon v7.0 and IIc QUEST 4.0.";
+        } else if (q.match(/experience|year/)) {
+            reply = "Uday has 1+ years of experience in full stack development, AI engineering, and system architecture.";
+        } else if (q.match(/hello|hi|hey|yo/)) {
+            reply = "Hello! 👋 I'm here to help you explore Uday's portfolio. What would you like to know?";
         }
 
         addMessage(reply, false);
@@ -378,6 +402,70 @@ function handleChat() {
 }
 
 sendChat.addEventListener('click', handleChat);
-chatInput.addEventListener('keypress', (e) => {
+chatInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') handleChat();
+});
+
+/* ── Typing Effect for hero role ──────────────────────────── */
+(function typingEffect() {
+    const roles = [
+        'Full Stack Developer',
+        'AI Engineer',
+        'ML Practitioner',
+    ];
+    const el = document.querySelector('.hero-role strong');
+    if (!el) return;
+
+    let rIdx = 0, cIdx = 0, deleting = false;
+
+    function type() {
+        const current = roles[rIdx];
+        el.textContent = current.substring(0, cIdx);
+
+        if (!deleting && cIdx < current.length) {
+            cIdx++;
+            setTimeout(type, 90);
+        } else if (deleting && cIdx > 0) {
+            cIdx--;
+            setTimeout(type, 45);
+        } else if (!deleting && cIdx === current.length) {
+            deleting = true;
+            setTimeout(type, 1800);
+        } else {
+            deleting = false;
+            rIdx = (rIdx + 1) % roles.length;
+            setTimeout(type, 300);
+        }
+    }
+
+    // Start after initial animation
+    setTimeout(type, 1200);
+})();
+
+/* ── Section entrance: tilt on mouse for project cards ─────── */
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect   = card.getBoundingClientRect();
+        const x      = e.clientX - rect.left;
+        const y      = e.clientY - rect.top;
+        const cx     = rect.width / 2;
+        const cy     = rect.height / 2;
+        const rotateX = ((y - cy) / cy) * -4;
+        const rotateY = ((x - cx) / cx) *  4;
+        card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+});
+
+/* ── Smooth scroll ─────────────────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
 });
