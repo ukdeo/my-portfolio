@@ -211,6 +211,7 @@ body::before {
     align-items: center;
     overflow: hidden;
     background: var(--black);
+    padding-top: 6rem;
 }
 
 /* Particle canvas background */
@@ -671,7 +672,7 @@ body::before {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--glass-border);
     border: 1px solid var(--glass-border);
@@ -1322,7 +1323,7 @@ footer p {
     .hero {
         height: auto;
         min-height: 100vh;
-        padding: 8rem 0 4rem 0;
+        padding: 10rem 0 4rem 0;
     }
 
     .hero-content {

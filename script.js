@@ -4,6 +4,41 @@
 
 'use strict';
 
+/* ── Circular Favicon ─────────────────────────────────────── */
+(function createCircularFavicon() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    
+    const img = new Image();
+    img.src = '474800178_1292461398633854_1106197501179038931_n.jpg';
+    img.onload = () => {
+        // Draw circular clipping path
+        ctx.beginPath();
+        ctx.arc(64, 64, 64, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.clip();
+        
+        // Calculate crop to center the image if needed, or just stretch/fit
+        // The image is probably somewhat rectangular. We'll draw it to fill the canvas.
+        const size = Math.min(img.width, img.height);
+        const xOffset = (img.width - size) / 2;
+        const yOffset = (img.height - size) / 2;
+        
+        ctx.drawImage(img, xOffset, yOffset, size, size, 0, 0, 128, 128);
+        
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.head.appendChild(link);
+        }
+        link.type = 'image/png';
+        link.href = canvas.toDataURL('image/png');
+    };
+})();
+
 /* ── Custom Cursor ────────────────────────────────────────── */
 const cursorDot  = document.getElementById('cursor-dot');
 const cursorRing = document.getElementById('cursor-ring');
@@ -301,7 +336,7 @@ if (yearsEl && projectsEl) {
     const observer = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting) {
             animateCounter(yearsEl, 1);
-            animateCounter(projectsEl, 8);
+            animateCounter(projectsEl, 6);
             observer.disconnect();
         }
     }, { threshold: 0.5 });
@@ -385,8 +420,8 @@ function handleChat() {
 
         if (q.match(/skill|language|tool|tech/)) {
             reply = "Uday is skilled in Python, JavaScript, React, C++, FastAPI, Django, Docker, MongoDB, PostgreSQL, TensorFlow, and Scikit-Learn.";
-        } else if (q.match(/project|work|portfolio|palo|queue|bank|voting|care|diabet|stock|database|habit/)) {
-            reply = "He's built 8 featured projects: Pālo Queue System, E-Voting System, Care Connect, Diabetes Checker, Stock Prediction, Self-Healing DB, Bank System & Habit Tracker!";
+        } else if (q.match(/project|work|portfolio|palo|queue|fleet|voting|care|diabet|database/)) {
+            reply = "He's built 6 featured projects: Pālo Queue System, Fleet Management System, E-Voting System, Care Connect, Diabetes Checker, & Self-Healing DB!";
         } else if (q.match(/contact|email|phone|hire|reach/)) {
             reply = "📧 udayd468@gmail.com | 📞 +977-9825967719 | GitHub: @ukdeo | LinkedIn: Uday Kumar Dev";
         } else if (q.match(/education|study|college|school|degree/)) {
