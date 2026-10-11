@@ -23,12 +23,15 @@
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-ring" id="cursor-ring"></div>
 
+    <!-- Mobile Nav Backdrop Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+
     <!-- ═══════════════════════════════════════════════
          NAVIGATION
     ═══════════════════════════════════════════════ -->
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo">UKD</div>
+            <a href="#home" class="logo" id="logo-link">UKD</a>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#home" id="nav-home">Home</a></li>
                 <li><a href="#projects" id="nav-projects">Projects</a></li>
@@ -36,11 +39,12 @@
                 <li><a href="#education" id="nav-education">Education</a></li>
                 <li><a href="#contact" id="nav-contact">Contact</a></li>
             </ul>
-            <div class="hamburger" id="hamburger">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
+            <button class="hamburger" id="hamburger" type="button" aria-label="Toggle navigation menu"
+                aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
         </div>
     </nav>
 
@@ -101,10 +105,10 @@
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
+        <a href="#projects" class="scroll-indicator" id="scroll-indicator" aria-label="Scroll to featured projects">
             <span class="scroll-label">Scroll</span>
             <div class="scroll-line"></div>
-        </div>
+        </a>
     </header>
 
     <!-- ═══════════════════════════════════════════════
@@ -147,7 +151,9 @@
             <div class="projects-grid">
 
                 <!-- 01 -->
-                <div class="project-card card-reveal" data-delay="0">
+                <div class="project-card card-reveal" data-delay="0"
+                    data-url="https://github.com/ukdeo/Queue-management" role="link" tabindex="0"
+                    aria-label="Pālo Queue System on GitHub">
                     <span class="project-num">01</span>
                     <h3>Pālo Queue System</h3>
                     <p>Real-time queue management and multi-booking slot system with SMS reminders and a web admin
@@ -158,17 +164,19 @@
                         <span class="tag">SMS API</span>
                         <span class="tag">SQLAlchemy</span>
                     </div>
-                    <a href="https://github.com/ukdeo/Queue-management" target="_blank" class="project-arrow"
-                        id="proj-1">
-                        View on GitHub →
+                    <a href="https://github.com/ukdeo/Queue-management" target="_blank" rel="noopener noreferrer"
+                        class="project-arrow" id="proj-1">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
                 <!-- 02 -->
-                <div class="project-card card-reveal" data-delay="100">
+                <div class="project-card card-reveal" data-delay="100"
+                    data-url="https://github.com/ukdeo/Bank-Mangement-System-console-based-" role="link" tabindex="0"
+                    aria-label="Fleet Management System on GitHub">
                     <span class="project-num">02</span>
-                    <h3>Fleet Management Syste</h3>
-                    <p>Designed a vehicle tracking and fleet operations console with admin dashboard .</p>
+                    <h3>Fleet Management System</h3>
+                    <p>Designed a vehicle tracking and fleet operations console with admin dashboard.</p>
                     <div class="tags">
                         <span class="tag">Django</span>
                         <span class="tag">PostgreSQL</span>
@@ -176,13 +184,15 @@
                         <span class="tag">Python</span>
                     </div>
                     <a href="https://github.com/ukdeo/Bank-Mangement-System-console-based-" target="_blank"
-                        class="project-arrow" id="proj-2">
-                        View on GitHub →
+                        rel="noopener noreferrer" class="project-arrow" id="proj-2">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
                 <!-- 03 -->
-                <div class="project-card card-reveal" data-delay="200">
+                <div class="project-card card-reveal" data-delay="200"
+                    data-url="https://github.com/ukdeo/E--voting-system" role="link" tabindex="0"
+                    aria-label="E-Voting System on GitHub">
                     <span class="project-num">03</span>
                     <h3>E-Voting System</h3>
                     <p>Secure voting interface built with Django and SQLite with real-time result calculations and
@@ -192,14 +202,16 @@
                         <span class="tag">SQLite3</span>
                         <span class="tag">Python</span>
                     </div>
-                    <a href="https://github.com/ukdeo/E--voting-system" target="_blank" class="project-arrow"
-                        id="proj-3">
-                        View on GitHub →
+                    <a href="https://github.com/ukdeo/E--voting-system" target="_blank" rel="noopener noreferrer"
+                        class="project-arrow" id="proj-3">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
                 <!-- 04 -->
-                <div class="project-card card-reveal" data-delay="300">
+                <div class="project-card card-reveal" data-delay="300"
+                    data-url="https://github.com/aces-erc/aces_techfest_hackathon_v7_3_idiots" role="link" tabindex="0"
+                    aria-label="Care Connect on GitHub">
                     <span class="project-num">04</span>
                     <h3>Care Connect</h3>
                     <p>Healthcare platform matching critical patients with local services, built during a 48-hour
@@ -210,13 +222,15 @@
                         <span class="tag">JavaScript</span>
                     </div>
                     <a href="https://github.com/aces-erc/aces_techfest_hackathon_v7_3_idiots" target="_blank"
-                        class="project-arrow" id="proj-4">
-                        View on GitHub →
+                        rel="noopener noreferrer" class="project-arrow" id="proj-4">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
                 <!-- 05 -->
-                <div class="project-card card-reveal" data-delay="0">
+                <div class="project-card card-reveal" data-delay="0"
+                    data-url="https://github.com/ukdeo/Diabetes-Health-check" role="link" tabindex="0"
+                    aria-label="Diabetes Health Checker on GitHub">
                     <span class="project-num">05</span>
                     <h3>Diabetes Health Checker</h3>
                     <p>ML classifier predicting diabetes probability using patient metrics with a responsive Streamlit
@@ -226,14 +240,16 @@
                         <span class="tag">Scikit-Learn</span>
                         <span class="tag">Streamlit</span>
                     </div>
-                    <a href="https://github.com/ukdeo/Diabetes-Health-check" target="_blank" class="project-arrow"
-                        id="proj-5">
-                        View on GitHub →
+                    <a href="https://github.com/ukdeo/Diabetes-Health-check" target="_blank" rel="noopener noreferrer"
+                        class="project-arrow" id="proj-5">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
                 <!-- 06 -->
-                <div class="project-card card-reveal" data-delay="200">
+                <div class="project-card card-reveal" data-delay="200"
+                    data-url="https://github.com/ukdeo/Self-Healing-Database" role="link" tabindex="0"
+                    aria-label="Self-Healing Database on GitHub">
                     <span class="project-num">06</span>
                     <h3>Self-Healing Database</h3>
                     <p>Fault-tolerant database wrapper with automatic node failure detection, replication protocols, and
@@ -243,9 +259,9 @@
                         <span class="tag">MongoDB</span>
                         <span class="tag">Docker</span>
                     </div>
-                    <a href="https://github.com/ukdeo/Self-Healing-Database" target="_blank" class="project-arrow"
-                        id="proj-7">
-                        View on GitHub →
+                    <a href="https://github.com/ukdeo/Self-Healing-Database" target="_blank" rel="noopener noreferrer"
+                        class="project-arrow" id="proj-6">
+                        <span>View on GitHub</span> <span>→</span>
                     </a>
                 </div>
 
@@ -410,15 +426,16 @@
                         </div>
                         <span class="contact-arrow">→</span>
                     </a>
-                    <a href="https://github.com/ukdeo" target="_blank" class="contact-link" id="contact-github">
+                    <a href="https://github.com/ukdeo" target="_blank" rel="noopener noreferrer" class="contact-link"
+                        id="contact-github">
                         <div>
                             <span class="contact-link-label">GitHub</span>
                             <p class="contact-link-value">github.com/ukdeo</p>
                         </div>
                         <span class="contact-arrow">→</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/uday-dev-48214b342/" target="_blank" class="contact-link"
-                        id="contact-linkedin">
+                    <a href="https://www.linkedin.com/in/uday-dev-48214b342/" target="_blank" rel="noopener noreferrer"
+                        class="contact-link" id="contact-linkedin">
                         <div>
                             <span class="contact-link-label">LinkedIn</span>
                             <p class="contact-link-value">Uday Kumar Dev</p>
@@ -434,24 +451,34 @@
          CHATBOT
     ═══════════════════════════════════════════════ -->
     <div id="chatbot-container">
-        <div id="chat-window">
+        <div id="chat-window" role="dialog" aria-label="Quick View AI Chat Window" aria-hidden="true">
             <div class="chat-header">
-                <h3>Quick View AI</h3>
-                <button class="chat-close" id="close-chat">✕</button>
+                <div class="chat-header-title">
+                    <span class="chat-status-dot"></span>
+                    <h3>Quick View AI</h3>
+                </div>
+                <button class="chat-close" id="close-chat" type="button" aria-label="Close chat">✕</button>
             </div>
-            <div id="chat-messages">
+            <div id="chat-messages" role="log" aria-live="polite">
                 <div class="chat-msg bot">
                     Hi! Ask me about Uday's skills, projects, or how to get in touch. 👋
                 </div>
             </div>
+            <div class="chat-suggestions" id="chat-suggestions">
+                <button type="button" class="chat-chip" data-query="skills">Skills</button>
+                <button type="button" class="chat-chip" data-query="projects">Projects</button>
+                <button type="button" class="chat-chip" data-query="contact">Contact</button>
+                <button type="button" class="chat-chip" data-query="experience">Experience</button>
+            </div>
             <div class="chat-footer">
-                <input type="text" id="chat-input" placeholder="Ask something..." autocomplete="off">
-                <button id="send-chat">→</button>
+                <input type="text" id="chat-input" placeholder="Ask something..." autocomplete="off"
+                    aria-label="Chat query">
+                <button id="send-chat" type="button" aria-label="Send message">→</button>
             </div>
         </div>
-        <div style="position:relative;">
+        <div class="chat-toggle-wrapper">
             <div class="chat-dot" id="chat-dot"></div>
-            <button id="chat-toggle">💬</button>
+            <button id="chat-toggle" type="button" aria-label="Open chat assistant" aria-expanded="false">💬</button>
         </div>
     </div>
 
@@ -459,7 +486,7 @@
          FOOTER
     ═══════════════════════════════════════════════ -->
     <footer>
-        <p>© 2024 Uday Kumar Dev — Full Stack Developer & AI Engineer</p>
+        <p>© 2024 Uday Kumar Dev/p>
     </footer>
 
     <script src="script.js"></script>
